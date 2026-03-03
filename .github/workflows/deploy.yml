@@ -1,0 +1,54 @@
+name: AppBuilder Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+env:
+  DOTNET_VERSION: "10.0.x"
+  REPO_NAME: "AppBuilder"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Publish
+        run: dotnet publish -c Release -o release
+
+      # Ajusta el base href para GitHub Pages: /REPO_NAME/
+      - name: Set base href and SPA fallback
+        run: |
+          sed -i 's|<base href="/" />|<base href="/'${{ env.REPO_NAME }}'/" />|g' release/wwwroot/index.html
+          cp release/wwwroot/index.html release/wwwroot/404.html
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: release/wwwroot
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
