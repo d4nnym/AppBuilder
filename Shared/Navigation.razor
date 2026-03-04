@@ -1,0 +1,84 @@
+﻿@implements IDisposable
+@inject NavigationManager NavManager
+@inject AppBuilder.Services.ThemeService Theme
+
+<MudButton StartIcon="@Icon"
+           OnClick="Navigate"
+           DisableElevation="true"
+           Size="Size.Medium"
+           Variant="@GetVariant()"
+           Color="@GetColor()">
+    <MudText>@Text</MudText>
+</MudButton>
+
+@code {
+    [Parameter, EditorRequired] public string Text { get; set; } = default!;
+    [Parameter, EditorRequired] public string Href { get; set; } = default!;
+    [Parameter] public string Icon { get; set; } = Icons.Material.Outlined.Circle;
+    [Parameter] public NavLinkMatch Match { get; set; } = NavLinkMatch.Prefix;
+
+    protected override void OnInitialized()
+    {
+        NavManager.LocationChanged += OnLocationChanged;
+        Theme.Changed += OnThemeChanged;
+    }
+
+    private void OnLocationChanged(object? sender, Microsoft.AspNetCore.Components.Routing.LocationChangedEventArgs e)
+        => InvokeAsync(StateHasChanged);
+
+    private void OnThemeChanged()
+        => InvokeAsync(StateHasChanged);
+
+    private void Navigate()
+        => NavManager.NavigateTo(Href);
+
+    private bool IsActive()
+    {
+        static string NormalizePath(string path)
+        {
+            if (string.IsNullOrWhiteSpace(path))
+                return "/";
+
+            if (!path.StartsWith("/"))
+                path = "/" + path;
+
+            path = path.TrimEnd('/');
+            return string.IsNullOrEmpty(path) ? "/" : path;
+        }
+
+        var current = NormalizePath(new Uri(NavManager.Uri).AbsolutePath);
+        var target = NormalizePath(Href);
+
+        return Match switch
+        {
+            NavLinkMatch.All => string.Equals(current, target, StringComparison.OrdinalIgnoreCase),
+            _ => current.StartsWith(target, StringComparison.OrdinalIgnoreCase)
+        };
+    }
+
+    private Variant GetVariant()
+    {
+        var active = IsActive();
+
+        if (!Theme.IsDark && !active) return Variant.Text;
+        if (Theme.IsDark && !active) return Variant.Text;
+        return Variant.Filled;
+    }
+
+    private Color GetColor()
+    {
+        var active = IsActive();
+
+        if (active) return Color.Tertiary;
+
+        if (Theme.IsDark) return Color.Primary;
+
+        return Color.Tertiary;
+    }
+
+    public void Dispose()
+    {
+        NavManager.LocationChanged -= OnLocationChanged;
+        Theme.Changed -= OnThemeChanged;
+    }
+}

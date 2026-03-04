@@ -1,0 +1,25 @@
+[
+  {
+    "slug": "inventory-system",
+    "title": "Inventory System",
+    "summary": "Catálogo de productos con Oracle + .NET",
+    "coverImage": "/images/projects/inventory.jpg",
+    "tags": [ "ASP.Net", "Blazor", "Oracle", "Clean" ],
+    "repoUrl": "https://github.com/tuuser/inventory",
+    "liveUrl": null,
+    "featured": true,
+    "date": "2026-03-01"
+  },
+  {
+    "slug": "inventory-system",
+    "title": "Inventory System",
+    "summary": "Catálogo de productos con Oracle + .NET",
+    "coverImage": "/images/projects/inventory.jpg",
+    "tags": [ "ASP.Net", "Blazor", "Oracle", "Clean" ],
+    "repoUrl": "https://github.com/tuuser/inventory",
+    "liveUrl": null,
+    "featured": true,
+    "date": "2026-03-01"
+  }
+
+]

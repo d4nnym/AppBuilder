@@ -1,0 +1,133 @@
+﻿@page "/projects"
+@using AppBuilder.Models
+@using AppBuilder.Shared
+@inject AppBuilder.Services.ContentIndexService Index
+@inject NavigationManager Nav
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="pt-8 pb-16">
+  <MudStack Spacing="2">
+    <MudText Typo="Typo.h4">Proyectos</MudText>
+    <MudText Typo="Typo.body2" Color="Color.Secondary">
+      Selección de trabajos y prácticas (Blazor, .NET, Oracle, etc.)
+    </MudText>
+
+    <MudGrid Spacing="2" Class="mt-2">
+      <MudItem xs="12" md="6">
+        <MudTextField @bind-Value="_q"
+                      Label="Buscar"
+                      Variant="Variant.Outlined"
+                      Immediate="true"
+                      Placeholder="Ej: Oracle, Blazor, APEX..."
+                      Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" />
+      </MudItem>
+
+      <MudItem xs="12" md="6">
+        <MudSelect T="ProjectSort" @bind-Value="_sort" Label="Orden" Variant="Variant.Outlined">
+          <MudSelectItem Value="ProjectSort.Newest">Más recientes</MudSelectItem>
+          <MudSelectItem Value="ProjectSort.Featured">Destacados</MudSelectItem>
+          <MudSelectItem Value="ProjectSort.Title">Título (A-Z)</MudSelectItem>
+        </MudSelect>
+      </MudItem>
+    </MudGrid>
+
+    @if (_all is null)
+    {
+      <MudProgressLinear Indeterminate="true" />
+    }
+    else
+    {
+      @if (_allTags.Count > 0)
+      {
+        <MudStack Row="true" Spacing="1" Wrap="Wrap.Wrap" Class="mt-2">
+          <MudChip T="string"
+                   Variant="Variant.Outlined"
+                   Color="@(_selectedTag is null ? Color.Primary : Color.Default)"
+                   Clickable="true"
+                   OnClick="@(() => _selectedTag = null)">
+            Todos
+          </MudChip>
+
+          @foreach (var tag in _allTags)
+          {
+            <MudChip T="string"
+                     Variant="Variant.Filled"
+                     Color="@(tag == _selectedTag ? Color.Primary : Color.Default)"
+                     Clickable="true"
+                     OnClick="@(() => _selectedTag = tag)">
+              @tag
+            </MudChip>
+          }
+        </MudStack>
+      }
+
+      <MudGrid Spacing="3" Class="mt-4">
+        @foreach (var p in Filtered())
+        {
+          <MudItem xs="12" sm="6" md="4">
+            <ProjectCard Item="p" />
+          </MudItem>
+        }
+      </MudGrid>
+
+      @if (!Filtered().Any())
+      {
+        <MudAlert Severity="Severity.Info" Class="mt-4">
+          No hay proyectos que coincidan con tu búsqueda/filtro.
+        </MudAlert>
+      }
+    }
+  </MudStack>
+</MudContainer>
+
+@code {
+  private IReadOnlyList<ProjectItem>? _all;
+
+  private string _q = "";
+  private string? _selectedTag = null;
+  private ProjectSort _sort = ProjectSort.Newest;
+
+  private List<string> _allTags = [];
+
+  protected override async Task OnInitializedAsync()
+  {
+    // OJO: usa ruta relativa si ya aplicaste BaseUri en el servicio
+    _all = await Index.LoadAsync<ProjectItem>("content/projects/projects.index.json");
+
+    _allTags = _all
+      .SelectMany(x => x.Tags ?? Array.Empty<string>())
+      .Distinct(StringComparer.OrdinalIgnoreCase)
+      .OrderBy(x => x)
+      .ToList();
+  }
+
+  private IEnumerable<ProjectItem> Filtered()
+  {
+    if (_all is null) return Enumerable.Empty<ProjectItem>();
+
+    IEnumerable<ProjectItem> q = _all;
+
+    if (!string.IsNullOrWhiteSpace(_q))
+    {
+      var s = _q.Trim();
+      q = q.Where(p =>
+        p.Title.Contains(s, StringComparison.OrdinalIgnoreCase) ||
+        p.Summary.Contains(s, StringComparison.OrdinalIgnoreCase) ||
+        p.Tags.Any(t => t.Contains(s, StringComparison.OrdinalIgnoreCase)));
+    }
+
+    if (!string.IsNullOrWhiteSpace(_selectedTag))
+      q = q.Where(p => p.Tags.Any(t => string.Equals(t, _selectedTag, StringComparison.OrdinalIgnoreCase)));
+
+    q = _sort switch
+    {
+      ProjectSort.Featured => q.OrderByDescending(x => x.Featured).ThenByDescending(x => x.Date ?? DateOnly.MinValue),
+      ProjectSort.Title    => q.OrderBy(x => x.Title),
+      _                    => q.OrderByDescending(x => x.Date ?? DateOnly.MinValue),
+    };
+
+    return q;
+  }
+
+  private enum ProjectSort { Newest, Featured, Title }
+}

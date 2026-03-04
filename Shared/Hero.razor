@@ -1,0 +1,26 @@
+﻿<MudStack Color="@Color.Transparent" Spacing="4" Style="position:relative">
+    
+    <MudStack >
+        <MudText Class="text-normal tracking-wide text-h2" Color="Color.Info" Typo="Typo.h2">Imagina</MudText>
+        <MudText Class="text-normal tracking-wide text-h2" Color="Color.Info" Typo="Typo.h2">Diseña</MudText>
+        <MudText Class="text-medium tracking-wide text-h2" Typo="Typo.h2" Color="Color.Success">&lt;Construye /&gt;</MudText>
+    </MudStack>
+    
+    <div class="d-flex flex-column flex-md-row gap-4">
+        <MudItem>
+            <MudText Typo="Typo.h5" Class="tracking-wide text-h4">Bienvenido a mi portafolio</MudText>
+        </MudItem>
+        <MudItem>
+            <div class="d-flex flex-column flex-md-row gap-4">
+                <MudButton Variant="Variant.Filled" Color="Color.Warning" Href="/projects">
+                    &lt;/&gt; Ver Proyectos
+                </MudButton>
+                <MudButton Variant="Variant.Filled" Color="Color.Success" Href="/resources">
+                    Recursos
+                </MudButton>
+            </div>
+        </MudItem>
+    </div>
+    
+    <MudImage Src="/images/ui/hero.png" ObjectFit="ObjectFit.Cover" Class="hero-image" />
+</MudStack>
