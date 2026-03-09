@@ -34,20 +34,17 @@
 
     private bool IsActive()
     {
-        static string NormalizePath(string path)
+        string Normalize(string path)
         {
-            if (string.IsNullOrWhiteSpace(path))
-                return "/";
+            path = path.Trim('/');
 
-            if (!path.StartsWith("/"))
-                path = "/" + path;
-
-            path = path.TrimEnd('/');
-            return string.IsNullOrEmpty(path) ? "/" : path;
+            return string.IsNullOrWhiteSpace(path)
+                ? "/#"
+                : path;
         }
 
-        var current = NormalizePath(new Uri(NavManager.Uri).AbsolutePath);
-        var target = NormalizePath(Href);
+        var current = Normalize(NavManager.ToBaseRelativePath(NavManager.Uri));
+        var target = Normalize(Href);
 
         return Match switch
         {
