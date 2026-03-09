@@ -18,7 +18,7 @@ a, .btn-link {
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 .content {
@@ -140,6 +140,7 @@ code {
 .hero-image {
     position: absolute;
     right: 0;
+    top: -64px;
     min-width: 35%;
     width: 100%;
     max-width: 720px;
@@ -150,6 +151,7 @@ code {
 .text-bold {
     font-weight: 700;
 }
+
 .text-medium {
     font-weight: 600;
 }
@@ -185,9 +187,6 @@ code {
     line-height: 1.15;
     font-weight: 600;
 }
-
-
-/* HEADINGS */
 
 .text-h1 {
     font-size: clamp(3rem, 4vw, 5rem);
@@ -225,9 +224,6 @@ code {
     font-weight: 600;
 }
 
-
-/* SUBTITLES */
-
 .text-subtitle1 {
     font-size: clamp(1.05rem, 1.6vw, 1.15rem);
     line-height: 1.5;
@@ -240,9 +236,6 @@ code {
     font-weight: 500;
 }
 
-
-/* BODY */
-
 .text-body1 {
     font-size: clamp(1rem, 1.4vw, 1.125rem);
     line-height: 1.65;
@@ -253,28 +246,26 @@ code {
     line-height: 1.6;
 }
 
-
-/* BUTTON */
-
 .text-button {
     font-size: clamp(0.85rem, 1.2vw, 0.95rem);
     letter-spacing: 0.05em;
     font-weight: 500;
 }
 
-
-/* CAPTION */
-
 .text-caption {
     font-size: clamp(0.75rem, 1vw, 0.85rem);
     line-height: 1.5;
 }
 
-
-/* OVERLINE */
-
 .text-overline {
     font-size: clamp(0.65rem, 0.9vw, 0.75rem);
     letter-spacing: 0.1em;
     text-transform: uppercase;
+}
+
+.mask-image {
+    width: 100%;
+    height: auto;
+    -webkit-mask-image: linear-gradient(to bottom, black 75%, transparent);
+    mask-image: linear-gradient(to bottom, black 75%, transparent);
 }

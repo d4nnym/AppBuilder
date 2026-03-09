@@ -1,12 +1,12 @@
 ﻿@using AppBuilder.Models
 @inject NavigationManager Nav
 
-<MudPaper Outlined="true" Class="card">
-  <MudImage Src="@Item.CoverImage" Height="180" ObjectFit="ObjectFit.Cover" />
+<MudPaper Outlined="true" Class="rounded-lg">
+    <MudImage Src="@Item.CoverImage" ObjectFit="ObjectFit.Cover" Class="mask-image rounded-lg" Alt="@Item.Title" />
 
-  <MudStack Class="p-4" Spacing="1">
-    <MudText Typo="Typo.h6">@Item.Title</MudText>
-    <MudText Typo="Typo.body2" Color="Color.Secondary">@Item.Summary</MudText>
+    <MudStack Class="pa-4 pa-md-8" Spacing="1">
+    <MudText Typo="Typo.h6" Color="Color.Default">@Item.Title</MudText>
+        <MudText Typo="Typo.body2" Color="Color.Default">@Item.Summary</MudText>
 
         <MudStack Row="true"
                   Spacing="1"
@@ -15,22 +15,23 @@
       @foreach (var t in Item.Tags.Take(4))
       {
                 <MudChip T="string"
+                         Label="true"
                          Size="Size.Small"
-                         Variant="Variant.Filled"
+                         Variant="Variant.Text"
                          Color="Color.Success">
                     @t
                 </MudChip>
       }
     </MudStack>
-
-    <MudStack Row="true" Spacing="2" Class="mt-3">
+        <MudDivider Class="my-1" />
+    <MudStack Justify="Justify.SpaceBetween" Row="true" Spacing="2" Class="mt-3">
       @if (!string.IsNullOrWhiteSpace(Item.LiveUrl))
       {
-        <MudButton Variant="Variant.Outlined" Size="Size.Small" Href="@Item.LiveUrl" Target="_blank">Sitio</MudButton>
+                <MudButton Variant="Variant.Text" Size="Size.Small" Href="@Item.LiveUrl" StartIcon="@Icons.Custom.Brands.GitHub" Color="Color.Default" Target="_blank"><MudText Typo="Typo.caption">Github</MudText></MudButton>
       }
-            <MudButton Variant="Variant.Filled" Color="Color.Tertiary" Size="Size.Small"
+            <MudButton Variant="Variant.Text" EndIcon="@Icons.Material.Outlined.ArrowForward" Color="Color.Success" Size="Size.Small"
                  OnClick="@(() => Nav.NavigateTo($"/projects/{Item.Slug}"))">
-        Ver más
+                <MudText Typo="Typo.caption">Leer Informe</MudText>
       </MudButton>
     </MudStack>
   </MudStack>

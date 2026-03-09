@@ -69,11 +69,11 @@
     {
         var active = IsActive();
 
-        if (active) return Color.Tertiary;
+        if (active) return Color.Success;
 
         if (Theme.IsDark) return Color.Primary;
 
-        return Color.Tertiary;
+        return Color.Success;
     }
 
     public void Dispose()

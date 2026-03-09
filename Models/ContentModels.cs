@@ -4,7 +4,7 @@ public sealed record ProjectItem(
     string Slug,
     string Title,
     string Summary,
-    string CoverImage,      // /images/...
+    string CoverImage,    
     string[] Tags,
     string? RepoUrl,
     string? LiveUrl,
@@ -27,8 +27,28 @@ public sealed record ResourceItem(
     string Title,
     string Summary,
     string[] Tags,
-    string? DownloadUrl,   // /content/resources/files/...
+    string? DownloadUrl,  
     string? ExternalUrl,
     DateOnly Date,
     string? CoverImage
+);
+
+public sealed record AboutMe(
+    string Name,
+    string Title,
+    string Summary,
+    string? AvatarImage,   
+    string? LinkedInUrl,
+    string? GitHubUrl,
+    string? TwitterUrl
+);
+
+
+public sealed record Home(
+    string Title,
+    string Summary,
+    string? CoverImage,  
+    string? LinkedInUrl,
+    string? GitHubUrl,
+    string? TwitterUrl
 );

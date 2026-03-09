@@ -1,0 +1,40 @@
+﻿@using AppBuilder.Shared
+@inject AppBuilder.Services.ContentIndexService Index
+
+<MudStack Direction="Row" Class="my-8 my-md-16">
+    <MudText Typo="Typo.h4" Class="mb-3">Recientes</MudText>
+
+    <MudGrid Spacing="4">
+        @if (_recentProjects is null)
+        {
+            <MudItem xs="12"><MudProgressLinear Indeterminate="true" /></MudItem>
+        }
+        else
+        {
+            @foreach (var p in _recentProjects)
+            {
+                <MudItem xs="12" sm="6" md="4" xl="3" Class="d-flex">
+                    <ProjectCard Item="p" />
+                </MudItem>
+            }
+        }
+    </MudGrid>
+</MudStack>
+
+
+@code {
+    private IReadOnlyList<AppBuilder.Models.ProjectItem>? _recentProjects;
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        var projects = await Index.GetProjectsAsync();
+        _recentProjects = projects
+          .OrderByDescending(x => x.Date ?? DateOnly.MinValue)
+          .ThenByDescending(x => x.Featured)
+          .Take(3)
+          .ToList();
+
+
+    }
+}

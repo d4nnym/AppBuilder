@@ -1,73 +1,16 @@
 ﻿@page "/"
-@using AppBuilder.Shared
+@using AppBuilder.Components.Home
 @inject AppBuilder.Services.ContentIndexService Index
 
-<MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="pb-20">
+<MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="my-10 my-lg-20 ">
 
-    <!-- HERO (lo dejamos simple aquí, tú ya lo estilizas) -->
     <Hero/>
+
+    <RecentProjects />
 
     <MudDivider Class="my-8" />
 
-    <!-- RECIENTES -->
-    <MudText Typo="Typo.h5" Class="mb-3">Recientes</MudText>
-
-    <MudGrid Spacing="3">
-        @if (_recentProjects is null)
-        {
-            <MudItem xs="12"><MudProgressLinear Indeterminate="true" /></MudItem>
-        }
-        else
-        {
-            @foreach (var p in _recentProjects)
-            {
-                <MudItem xs="12" sm="6" md="4">
-                    <ProjectCard Item="p" />
-                </MudItem>
-            }
-        }
-    </MudGrid>
-
-    <MudDivider Class="my-10" />
-
-    <!-- RECURSOS -->
-    <MudText Typo="Typo.h5" Class="mb-3">Recursos</MudText>
-
-    <MudGrid Spacing="3">
-        @if (_recentResources is null)
-        {
-            <MudItem xs="12"><MudProgressLinear Indeterminate="true" /></MudItem>
-        }
-        else
-        {
-            @foreach (var r in _recentResources)
-            {
-                <MudItem xs="12" sm="6" md="4">
-                    <ResourceCard Item="r" />
-                </MudItem>
-            }
-        }
-    </MudGrid>
+    <RecentResources />
 
 </MudContainer>
 
-@code {
-    private IReadOnlyList<AppBuilder.Models.ProjectItem>? _recentProjects;
-    private IReadOnlyList<AppBuilder.Models.ResourceItem>? _recentResources;
-
-    protected override async Task OnInitializedAsync()
-    {
-        var projects = await Index.GetProjectsAsync();
-        _recentProjects = projects
-          .OrderByDescending(x => x.Date ?? DateOnly.MinValue)
-          .ThenByDescending(x => x.Featured)
-          .Take(3)
-          .ToList();
-
-        var resources = await Index.GetResourcesAsync();
-        _recentResources = resources
-          .OrderByDescending(x => x.Date)
-          .Take(3)
-          .ToList();
-    }
-}

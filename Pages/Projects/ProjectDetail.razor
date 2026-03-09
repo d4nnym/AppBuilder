@@ -1,0 +1,42 @@
+﻿@page "/projects/{Slug}"
+@inject AppBuilder.Services.ContentIndexService Index
+@inject AppBuilder.Services.MarkdownService Md
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="pt-8 pb-16">
+    @if (_item is null)
+    {
+        <MudProgressCircular Indeterminate="true" />
+    }
+    else
+    {
+        <MudText Typo="Typo.h4">@_item.Title</MudText>
+        <MudText Typo="Typo.subtitle2" Color="Color.Secondary" Class="mb-4">
+            @_item.Date?.ToString("yyyy-MM-dd") · @string.Join(" · ", _item.Tags)
+        </MudText>
+
+        <MudPaper Outlined="true" Class="p-4 markdown">
+            @((MarkupString)_html)
+        </MudPaper>
+    }
+</MudContainer>
+
+@code {
+    [Parameter] public string Slug { get; set; } = string.Empty;
+
+    private AppBuilder.Models.ProjectItem? _item;
+    private string _html = "";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var all = await Index.GetProjectsAsync();
+        _item = all.FirstOrDefault(x => x.Slug == Slug);
+
+        if (_item is null)
+        {
+            _html = "<p>No encontrado.</p>";
+            return;
+        }
+
+        _html = await Md.RenderFromContentAsync($"content/projects/{Slug}.md");
+    }
+}

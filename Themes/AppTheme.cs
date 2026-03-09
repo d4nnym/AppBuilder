@@ -1,6 +1,6 @@
 ﻿using MudBlazor;
 
-namespace AppBuilder.Theme;
+namespace AppBuilder.Themes;
 
 public static class AppTheme
 {
@@ -18,7 +18,7 @@ public static class AppTheme
             H5 = new H5Typography { FontFamily = Rubik },
             H6 = new H6Typography { FontFamily = Rubik },
             Body1 = new Body1Typography { FontFamily = Rubik },
-            Body2 = new Body2Typography { FontFamily = Rubik },
+            Body2 = new Body2Typography{FontFamily = Rubik},
             Button = new ButtonTypography { FontFamily = Rubik }
         },
         PaletteLight = new PaletteLight
@@ -31,7 +31,7 @@ public static class AppTheme
             AppbarText = "#111827",
             Background = "#FFF",
             Surface = "#FFFFFF",
-            TextPrimary = "#1F2937",
+            TextPrimary = "#3C3B45",
             TextSecondary = "#6B7280",
             Info = "#0a0e1a",
             DrawerBackground = "#FFFFFF"
@@ -65,7 +65,6 @@ public static class AppTheme
             Surface = "#1B1F2A",
             Success = "#5B6EF5",
             Info = "#fff",
-            TextPrimary = "#fff",
             DrawerBackground = "#0E1126"
 
         }

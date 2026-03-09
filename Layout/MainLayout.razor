@@ -1,4 +1,4 @@
-﻿@using AppBuilder.Theme
+﻿@using AppBuilder.Themes
 @inject AppBuilder.Services.ThemeService Theme
 @inherits LayoutComponentBase
 
@@ -7,40 +7,40 @@
 <MudSnackbarProvider />
 <MudPopoverProvider />
 <MudGrid>
-    <MudItem xs="12">
-        <header>
-            <MudAppBar Color="Color.Surface" Elevation="4">
-                <MudHidden Breakpoint="Breakpoint.MdAndUp">
-                    <MudIconButton Icon="@Icons.Material.Filled.Menu"
-                                   Color="Color.Inherit"
-                                   OnClick="@(()=>_drawerOpen = true)" />
-                </MudHidden>
-                <MudText Typo="Typo.h6">AppBuilder</MudText>
-                <MudSpacer />
-                <MudHidden Breakpoint="Breakpoint.SmAndDown">
-                    <NavMenu />
-                </MudHidden>
+    <MudItem xs="12" Class="px-10">
+        @*Header*@
+        <MudAppBar Color="Color.Surface" Elevation="4" Class="px-0 px-lg-10 px-xl-20">
+            <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                <MudIconButton Icon="@Icons.Material.Filled.Menu"
+                               Color="Color.Inherit"
+                               OnClick="@(()=>_drawerOpen = true)" />
+            </MudHidden>
+            <MudText Typo="Typo.h6">AppBuilder</MudText>
+            <MudSpacer />
+            <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                <NavMenu />
+            </MudHidden>
 
-                <MudSpacer />
-                <MudIconButton Icon="@Icons.Material.Filled.Brightness4" Color="Color.Primary" OnClick="@ToggleTheme" />
-            </MudAppBar>
+            <MudSpacer />
+            <MudIconButton Icon="@Icons.Material.Filled.Brightness4" Color="Color.Primary" OnClick="@ToggleTheme" />
+        </MudAppBar>
 
-            <MudDrawer Open="@_drawerOpen"
-                       OpenChanged="@(v => _drawerOpen = v)"
-                       Anchor="Anchor.Left"
-                       Variant="DrawerVariant.Temporary"
-                       Elevation="8"
-                       Style="background-color: var(--mud-palette-drawer-background);">
-                <MudStack Style="background-color: var(--mud-palette-drawer-background);" Spacing="2" Class="pa-4">
-                    <MudText Typo="Typo.h6">Menú</MudText>
-                    <NavMenu IsVertical="true" OnNavigate="CloseDrawer" />
-                </MudStack>
-            </MudDrawer>
-        </header>
+        <MudDrawer Open="@_drawerOpen"
+                   OpenChanged="@(v => _drawerOpen = v)"
+                   Anchor="Anchor.Left"
+                   Variant="DrawerVariant.Temporary"
+                   Elevation="8"
+                   Style="background-color: var(--mud-palette-drawer-background);">
+            <MudStack Style="background-color: var(--mud-palette-drawer-background);" Spacing="2" Class="pa-4">
+                <MudText Typo="Typo.h6">Menú</MudText>
+                <NavMenu IsVertical="true" OnNavigate="CloseDrawer" />
+            </MudStack>
+        </MudDrawer>
+
 
     </MudItem>
     <MudItem xs="12">
-        <main>
+        <main Class="px-0 px-lg-10 px-xl-20">
             <MudLayout>
                 <MudMainContent>
                     @Body
