@@ -1,0 +1,260 @@
+﻿:root,
+html.light {
+    --portfolio-grid: rgba(0, 0, 0, 0.04);
+}
+
+html.dark {
+    --portfolio-grid: rgba(255, 255, 255, 0.03);
+}
+
+/* ── Markdown Body — Light Mode (default) ─────────────────────────────────── */
+.markdown {
+    color: #475569;
+    line-height: 1.85;
+}
+
+    .markdown h2 {
+        font-size: 1.35rem;
+        font-weight: 700;
+        color: #0f172a;
+        margin-top: 2.5rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.07);
+    }
+
+    .markdown h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: #1e293b;
+        margin-top: 1.75rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .markdown h4 {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: #334155;
+        margin-top: 1.25rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .markdown p {
+        margin-bottom: 1rem;
+        font-size: 0.9375rem;
+    }
+
+    .markdown ul,
+    .markdown ol {
+        padding-left: 1.5rem;
+        margin-bottom: 1rem;
+    }
+
+    .markdown ul {
+        list-style: none;
+        padding-left: 0;
+    }
+
+    .markdown li {
+        margin-bottom: 0.35rem;
+        font-size: 0.9375rem;
+    }
+
+    .markdown ul li::before {
+        content: "▸";
+        color: #0891b2;
+        margin-right: 0.5rem;
+    }
+
+    .markdown ol li {
+        list-style: decimal;
+        margin-left: 1.25rem;
+    }
+
+    .markdown strong {
+        color: #0f172a;
+        font-weight: 600;
+    }
+
+    .markdown link {
+        color: #0891b2;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        text-decoration-color: rgba(8, 145, 178, 0.35);
+        transition: color 0.15s, text-decoration-color 0.15s;
+    }
+
+        .markdown link:hover {
+            color: #0e7490;
+            text-decoration-color: rgba(14, 116, 144, 0.6);
+        }
+
+    .markdown blockquote {
+        border-left: 3px solid #0891b2;
+        padding: 0.5rem 0 0.5rem 1.25rem;
+        margin: 1.25rem 0;
+        background: rgba(8, 145, 178, 0.04);
+        border-radius: 0 6px 6px 0;
+        color: #64748b;
+        font-style: italic;
+    }
+
+    .markdown-body .md-hr {
+        border: none;
+        border-top: 1px solid rgba(0, 0, 0, 0.08);
+        margin: 2rem 0;
+    }
+
+    /* Code blocks — always dark for readability regardless of theme */
+    .markdown-body .md-pre {
+        background: #0d1117;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+        border-radius: 10px;
+        padding: 1.25rem;
+        overflow-x: auto;
+        margin: 1.25rem 0;
+        font-size: 0.82rem;
+        line-height: 1.6;
+    }
+
+        .markdown-body .md-pre code {
+            background: none;
+            padding: 0;
+            border: none;
+            font-size: inherit;
+            color: inherit;
+        }
+
+    .markdown-body .md-inline-code {
+        background: rgba(8, 145, 178, 0.08);
+        border: 1px solid rgba(8, 145, 178, 0.18);
+        color: #0e7490;
+        padding: 0.1em 0.4em;
+        border-radius: 4px;
+        font-size: 0.82em;
+        font-family: "JetBrains Mono", "Fira Code", monospace;
+    }
+
+    /* Tables */
+    .markdown-body .md-table-wrapper {
+        overflow-x: auto;
+        margin: 1.25rem 0;
+        border-radius: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .markdown table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.875rem;
+    }
+
+    .markdown thead {
+        background: rgba(0, 0, 0, 0.03);
+    }
+
+    .markdown th {
+        padding: 0.65rem 1rem;
+        text-align: left;
+        color: #1e293b;
+        font-weight: 600;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        white-space: nowrap;
+    }
+
+    .markdown td {
+        padding: 0.6rem 1rem;
+        color: #475569;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    }
+
+    .markdown tr:last-child td {
+        border-bottom: none;
+    }
+
+    .markdown tr:hover td {
+        background: rgba(0, 0, 0, 0.02);
+    }
+
+/* ── Markdown Body — Dark Mode overrides ─────────────────────────────────── */
+html.dark .markdown-body {
+    color: #94a3b8;
+}
+
+    html.dark .markdown-body .md-h2 {
+        color: #f1f5f9;
+        border-bottom-color: rgba(255, 255, 255, 0.07);
+    }
+
+    html.dark .markdown-body .md-h3 {
+        color: #e2e8f0;
+    }
+
+    html.dark .markdown-body .md-h4 {
+        color: #cbd5e1;
+    }
+
+    html.dark .markdown-body .md-strong {
+        color: #e2e8f0;
+    }
+
+    html.dark .markdown-body .md-link {
+        color: #22d3ee;
+        text-decoration-color: rgba(34, 211, 238, 0.35);
+    }
+
+        html.dark .markdown-body .md-link:hover {
+            color: #67e8f9;
+            text-decoration-color: rgba(103, 232, 249, 0.6);
+        }
+
+    html.dark .markdown-body .md-blockquote {
+        border-left-color: #22d3ee;
+        background: rgba(34, 211, 238, 0.04);
+        color: #94a3b8;
+    }
+
+    html.dark .markdown-body .md-hr {
+        border-top-color: rgba(255, 255, 255, 0.08);
+    }
+
+    html.dark .markdown-body .md-pre {
+        border-color: rgba(255, 255, 255, 0.07);
+    }
+
+    html.dark .markdown-body .md-inline-code {
+        background: rgba(34, 211, 238, 0.08);
+        border-color: rgba(34, 211, 238, 0.15);
+        color: #67e8f9;
+    }
+
+    html.dark .markdown-body .md-ul .md-li::before {
+        color: #22d3ee;
+    }
+
+    html.dark .markdown-body .md-table-wrapper {
+        border-color: rgba(255, 255, 255, 0.07);
+    }
+
+    html.dark .markdown-body .md-thead {
+        background: rgba(255, 255, 255, 0.04);
+    }
+
+    html.dark .markdown-body .md-th {
+        color: #e2e8f0;
+        border-bottom-color: rgba(255, 255, 255, 0.07);
+    }
+
+    html.dark .markdown-body .md-td {
+        color: #94a3b8;
+        border-bottom-color: rgba(255, 255, 255, 0.04);
+    }
+
+    html.dark .markdown-body .md-tr:hover .md-td {
+        background: rgba(255, 255, 255, 0.02);
+    }
+
+/* highlight.js overrides */
+.markdown-body .hljs {
+    background: transparent;
+}

@@ -1,39 +1,23 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">AppBuilder</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
-
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="nav flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="weather">
-                <span class="bi bi-list-nested-nav-menu" aria-hidden="true"></span> Weather
-            </NavLink>
-        </div>
-    </nav>
-</div>
+﻿@using AppBuilder.Shared
+<nav>
+    <MudStack Row="@(!IsVertical)" Spacing=" 1" Class="p-0 w-100" AlignItems="AlignItems.Stretch" Wrap="Wrap.Wrap">
+        <Navigation Text="Inicio" Href="/" Icon="@Icons.Material.Outlined.Home" Match="NavLinkMatch.All" />
+        <Navigation Text="Proyectos" Href="/projects" Icon="@Icons.Material.Filled.Code" />
+        <Navigation Text="Recursos" Href="/resources" Icon="@Icons.Material.Outlined.RemoveRedEye" />
+        <Navigation Text="Sobre mi" Href="/aboutme" Icon="@Icons.Material.Outlined.Info" />
+    </MudStack>
+</nav>
 
 @code {
-    private bool collapseNavMenu = true;
+    [Parameter] public bool IsVertical { get; set; } = false;
+    [Parameter] public EventCallback OnNavigate { get; set; }
 
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
+    [Inject] NavigationManager Nav { get; set; } = default!;
 
-    private void ToggleNavMenu()
+    private async Task Go(string url)
     {
-        collapseNavMenu = !collapseNavMenu;
+        Nav.NavigateTo(url);
+        if (OnNavigate.HasDelegate)
+            await OnNavigate.InvokeAsync();
     }
 }

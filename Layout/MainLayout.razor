@@ -1,16 +1,75 @@
-﻿@inherits LayoutComponentBase
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+﻿@using AppBuilder.Themes
+@inject AppBuilder.Services.ThemeService Theme
+@inherits LayoutComponentBase
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
+<MudThemeProvider Theme="@CurrentTheme" IsDarkMode="@Theme.IsDark" />
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudPopoverProvider />
+<MudGrid>
+    <MudItem xs="12" Class="px-10">
+        @*Header*@
+        <MudAppBar Color="Color.Surface" Elevation="4" Class="px-0 px-lg-10 px-xl-20">
+            <MudHidden Breakpoint="Breakpoint.MdAndUp">
+                <MudIconButton Icon="@Icons.Material.Filled.Menu"
+                               Color="Color.Inherit"
+                               OnClick="@(()=>_drawerOpen = true)" />
+            </MudHidden>
+            <MudText Typo="Typo.h6">AppBuilder</MudText>
+            <MudSpacer />
+            <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                <NavMenu />
+            </MudHidden>
 
-        <article class="content px-4">
-            @Body
-        </article>
-    </main>
-</div>
+            <MudSpacer />
+            <MudIconButton Icon="@Icons.Material.Filled.Brightness4" Color="Color.Primary" OnClick="@ToggleTheme" />
+        </MudAppBar>
+
+        <MudDrawer Open="@_drawerOpen"
+                   OpenChanged="@(v => _drawerOpen = v)"
+                   Anchor="Anchor.Left"
+                   Variant="DrawerVariant.Temporary"
+                   Elevation="8"
+                   Style="background-color: var(--mud-palette-drawer-background);">
+            <MudStack Style="background-color: var(--mud-palette-drawer-background);" Spacing="2" Class="pa-4">
+                <MudText Typo="Typo.h6">Menú</MudText>
+                <NavMenu IsVertical="true" OnNavigate="CloseDrawer" />
+            </MudStack>
+        </MudDrawer>
+
+
+    </MudItem>
+    <MudItem xs="12">
+        <main Class="px-0 px-lg-10 px-xl-20">
+            <MudLayout>
+                <MudMainContent>
+                    @Body
+                </MudMainContent>
+            </MudLayout>
+        </main>
+    </MudItem>
+
+</MudGrid>
+
+@code {
+    private MudTheme CurrentTheme => Theme.IsDark ? AppTheme.Dark : AppTheme.Light;
+    private bool _drawerOpen;
+    protected override async Task OnInitializedAsync()
+    {
+        Theme.Changed += StateHasChanged;
+        await Theme.InitializeAsync();
+    }
+
+    private async Task ToggleTheme() => await Theme.ToggleAsync();
+
+    public void Dispose()
+    {
+        Theme.Changed -= StateHasChanged;
+    }
+
+    private Task CloseDrawer()
+    {
+        _drawerOpen = false;
+        return Task.CompletedTask;
+    }
+}

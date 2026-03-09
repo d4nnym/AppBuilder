@@ -1,0 +1,12 @@
+[
+  {
+    "slug": "oracle-apex-roles",
+    "title": "Roles en Oracle APEX",
+    "summary": "Cómo modelar viewers/admins y mapearlo a usuarios.",
+    "tags": [ "Oracle", "APEX", "Seguridad" ],
+    "downloadUrl": null,
+    "externalUrl": null,
+    "date": "2026-03-02",
+    "coverImage": "/images/resources/apex.jpg"
+  }
+]

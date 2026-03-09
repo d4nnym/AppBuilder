@@ -1,0 +1,111 @@
+﻿@page "/resources"
+@using AppBuilder.Models
+@using AppBuilder.Shared
+@inject AppBuilder.Services.ContentIndexService Index
+@inject NavigationManager Nav
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="pt-8 pb-16">
+  <MudStack Spacing="2">
+    <MudText Typo="Typo.h4">Recursos</MudText>
+    <MudText Typo="Typo.body2" Color="Color.Secondary">
+      Notas, artículos, guías y temas de interés de mi experiencia.
+    </MudText>
+
+    <MudTextField @bind-Value="_q"
+                  Label="Buscar"
+                  Variant="Variant.Outlined"
+                  Immediate="true"
+                  Placeholder="Ej: Oracle APEX, roles, seguridad..."
+                  Adornment="Adornment.Start"
+                  AdornmentIcon="@Icons.Material.Filled.Search"
+                  Class="mt-2" />
+
+    @if (_all is null)
+    {
+      <MudProgressLinear Indeterminate="true" />
+    }
+    else
+    {
+      @if (_allTags.Count > 0)
+      {
+        <MudStack Row="true" Spacing="1" Wrap="Wrap.Wrap" Class="mt-2">
+          <MudChip T="string"
+                   Variant="Variant.Outlined"
+                   Color="@(_selectedTag is null ? Color.Primary : Color.Default)"
+                   Clickable="true"
+                   OnClick="@(() => _selectedTag = null)">
+            Todos
+          </MudChip>
+
+          @foreach (var tag in _allTags)
+          {
+            <MudChip T="string"
+                     Variant="Variant.Filled"
+                     Color="@(tag == _selectedTag ? Color.Primary : Color.Default)"
+                     Clickable="true"
+                     OnClick="@(() => _selectedTag = tag)">
+              @tag
+            </MudChip>
+          }
+        </MudStack>
+      }
+
+      <MudGrid Spacing="3" Class="mt-4">
+        @foreach (var r in Filtered())
+        {
+          <MudItem xs="12" sm="6" md="4">
+            <ResourceCard Item="r" />
+          </MudItem>
+        }
+      </MudGrid>
+
+      @if (!Filtered().Any())
+      {
+        <MudAlert Severity="Severity.Info" Class="mt-4">
+          No hay recursos que coincidan con tu búsqueda/filtro.
+        </MudAlert>
+      }
+    }
+  </MudStack>
+</MudContainer>
+
+@code {
+  private IReadOnlyList<ResourceItem>? _all;
+
+  private string _q = "";
+  private string? _selectedTag = null;
+
+  private List<string> _allTags = [];
+
+  protected override async Task OnInitializedAsync()
+  {
+    _all = await Index.LoadAsync<ResourceItem>("content/resources/resources.index.json");
+
+    _allTags = _all
+      .SelectMany(x => x.Tags ?? Array.Empty<string>())
+      .Distinct(StringComparer.OrdinalIgnoreCase)
+      .OrderBy(x => x)
+      .ToList();
+  }
+
+  private IEnumerable<ResourceItem> Filtered()
+  {
+    if (_all is null) return Enumerable.Empty<ResourceItem>();
+
+    IEnumerable<ResourceItem> q = _all;
+
+    if (!string.IsNullOrWhiteSpace(_q))
+    {
+      var s = _q.Trim();
+      q = q.Where(r =>
+        r.Title.Contains(s, StringComparison.OrdinalIgnoreCase) ||
+        r.Summary.Contains(s, StringComparison.OrdinalIgnoreCase) ||
+        r.Tags.Any(t => t.Contains(s, StringComparison.OrdinalIgnoreCase)));
+    }
+
+    if (!string.IsNullOrWhiteSpace(_selectedTag))
+      q = q.Where(r => r.Tags.Any(t => string.Equals(t, _selectedTag, StringComparison.OrdinalIgnoreCase)));
+
+    return q.OrderByDescending(x => x.Date);
+  }
+}

@@ -1,7 +1,16 @@
 ﻿@page "/"
+@using AppBuilder.Components.Home
+@inject AppBuilder.Services.ContentIndexService Index
 
-<PageTitle>Home</PageTitle>
+<MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="my-10 my-lg-20 ">
 
-<h1>Hello, world!</h1>
+    <Hero/>
 
-Welcome to your new app.
+    <RecentProjects />
+
+    <MudDivider Class="my-8" />
+
+    <RecentResources />
+
+</MudContainer>
+
